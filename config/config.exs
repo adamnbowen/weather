@@ -2,6 +2,9 @@
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
+config :weather, base_url: "http://api.wunderground.com/api"
+config :weather, api_key: System.get_env("WUNDERGROUND_API_KEY")
+
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
 # file won't be loaded nor affect the parent project. For this reason,
