@@ -21,3 +21,6 @@ erl_crash.dump
 
 # Prevent environment variables from being shared:
 .env
+
+# Don't put compiled escript into git:
+/weather

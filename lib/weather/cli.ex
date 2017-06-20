@@ -4,7 +4,7 @@ defmodule Weather.CLI do
   the various functions that display info about the weather.
   """
 
-  def run(argv) do
+  def main(argv) do
     argv
     |> parse_args
     |> process

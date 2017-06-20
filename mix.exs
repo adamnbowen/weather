@@ -5,6 +5,9 @@ defmodule Weather.Mixfile do
     [app: :weather,
      version: "0.1.0",
      elixir: "~> 1.4",
+     escript: escript_config(),
+     name: "Weather",
+     source_url: "https://github.com/adamnbowen/weather",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps()]
@@ -30,7 +33,13 @@ defmodule Weather.Mixfile do
   defp deps do
     [
       { :httpoison, "0.11.2" },
-      { :poison, "3.1.0" }
+      { :poison, "3.1.0" },
+      { :ex_doc, "0.15.1" },
+      { :earmark, "1.2.1", override: true}
     ]
+  end
+  
+  defp escript_config do
+    [ main_module: Weather.CLI ]
   end
 end

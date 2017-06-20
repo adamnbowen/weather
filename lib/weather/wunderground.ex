@@ -1,4 +1,7 @@
 defmodule Weather.Wunderground do
+  
+  require Logger
+
   @user_agent  [ {"User-agent", "Weather weather@example.com"} ]
 
   @base_url Application.get_env(:weather, :base_url)
@@ -11,11 +14,13 @@ defmodule Weather.Wunderground do
     |> ensure_success
   end
 
-  def handle_response({ :ok, %{status_code: 200, body: body } }) do
+  def handle_response({ :ok, %{status_code: 200,    body: body } }) do
     { :ok,    Poison.Parser.parse!(body) }
   end
 
-  def handle_response({ _,   %{status_code: _,   body: body} }) do
+  def handle_response({ _,   %{status_code: status, body: body} }) do
+    Logger.error "Error #{status} returned"
+    Logger.debug fn -> inspect(body) end
     { :error, Poison.Parser.parse!(body) }
   end
   
@@ -24,8 +29,14 @@ defmodule Weather.Wunderground do
   # but I have to put the failure case first,
   # due to pattern matching
   def ensure_success({ :ok, %{"response" => %{"error" => error}} }) do
+    Logger.error "Error present in response"
+    Logger.debug fn -> inspect(error) end
     { :error, error }
   end
   
-  def ensure_success({ :ok, body }), do: { :ok, body }
+  def ensure_success({ :ok, body }) do 
+    Logger.info "Successful response"
+    Logger.debug fn -> inspect(body) end
+    { :ok, body }
+  end
 end
